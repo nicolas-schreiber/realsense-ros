@@ -23,6 +23,14 @@ find_package(catkin REQUIRED COMPONENTS
     diagnostic_updater
     )
 
+    ### CUDA ###
+find_package(CUDA REQUIRED)
+
+set(CUDA_NVCC_FLAGS "-arch=compute_30" CACHE STRING "nvcc flags" FORCE)
+set (CUDA_VERBOSE_BUILD ON CACHE BOOL "nvcc verbose" FORCE)
+set(LIB_TYPE STATIC) 
+### 
+
 if(BUILD_WITH_OPENMP)
     find_package(OpenMP)
     if(NOT OpenMP_FOUND)
@@ -95,6 +103,10 @@ catkin_package(
     nav_msgs
     )
 
+cuda_add_library(base_realsense_cuda SHARED
+    src/base_realsense_node.cu
+)
+
 add_library(${PROJECT_NAME}
     include/constants.h
     include/realsense_node_factory.h
@@ -115,6 +127,7 @@ target_link_libraries(${PROJECT_NAME}
     ${realsense2_LIBRARY}
     ${catkin_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
+    base_realsense_cuda
     )
 
 if(WIN32)

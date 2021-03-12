@@ -326,10 +326,12 @@ namespace realsense2_camera
         stream_index_pair _base_stream;
         const std::string _namespace;
 
-        sensor_msgs::PointCloud2 _msg_pointcloud;
+        sensor_msgs::PointCloud2Ptr _msg_pointcloud;
         std::vector< unsigned int > _valid_pc_indices;
 
     };//end class
 
 }
 
+int cudaFillColorPointCloud(const rs2::points& h_points, const rs2::video_frame& colors, sensor_msgs::PointCloud2Ptr& point_cloud, bool _ordered_pc, bool _allow_no_texture_points);
+int cudaFillPointCloud(const rs2::points& h_points, sensor_msgs::PointCloud2Ptr& point_cloud, bool _ordered_pc, bool _allow_no_texture_points);
